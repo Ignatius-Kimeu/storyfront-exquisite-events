@@ -116,7 +116,7 @@ em{font-style:italic}
   text-align:center;line-height:1.2;
 }
 .btn:active{transform:translateY(1px)}
-.btn svg{width:17px;height:17px;flex:none}
+.btn svg{width:1.2em;height:1.2em;flex:none}
 
 .btn--terra{background:var(--terra);color:#FFF4EC;border-color:var(--terra)}
 .btn--terra:hover{background:var(--terra-d);border-color:var(--terra-d);color:#FFF4EC}
@@ -210,12 +210,16 @@ em{font-style:italic}
   transition:transform .48s var(--ease),visibility .48s var(--ease);
 }
 .mnav.open{transform:none;visibility:visible}
-.mnav a{
+.mnav a:not(.btn){
   font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;
   color:var(--bone);padding:.55rem 0;border-bottom:1px solid rgba(223,192,132,.16);
 }
 .mnav a[aria-current="page"]{color:var(--brass)}
-.mnav .btn{margin-top:1.9rem}
+.mnav .btn{
+  margin-top:1.9rem;align-self:start;
+  font-family:'Jost',sans-serif;font-size:.72rem;font-weight:500;
+  letter-spacing:.11em;gap:.5rem;padding:.72rem 1.1rem;border-bottom:0;
+}
 .mnav__meta{margin-top:1.6rem;font-size:.78rem;color:var(--muted-l);letter-spacing:.05em}
 .mnav__meta a{font-family:'Jost',sans-serif;font-size:.78rem;color:var(--brass);
   border:0;padding:0;display:inline}
@@ -416,9 +420,10 @@ em{font-style:italic}
    Deliberately a different visual language from the photo grid above.
    ========================================================================= */
 .films{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,268px),1fr));
+  display:grid;grid-template-columns:repeat(2,minmax(0,430px));justify-content:center;
   gap:clamp(16px,2.4vw,30px);
 }
+@media (max-width:700px){.films{grid-template-columns:minmax(0,1fr)}}
 .film{
   position:relative;border-radius:var(--r);overflow:hidden;cursor:pointer;
   background:var(--ink-2);border:1px solid rgba(223,192,132,.2);
@@ -432,6 +437,7 @@ em{font-style:italic}
   .film{transform:none;transition:opacity .3s linear,border-color .3s}
 }
 /* staggered cascade — each card enters a beat after the one before it */
+.film--wide{aspect-ratio:1280/544;grid-column:1/-1}
 .film:nth-child(2){transition-delay:.09s}
 .film:nth-child(3){transition-delay:.18s}
 .film:nth-child(4){transition-delay:.27s}
@@ -454,6 +460,10 @@ em{font-style:italic}
   position:absolute;inset:0;z-index:2;
   background:linear-gradient(180deg,rgba(23,26,19,.5) 0%,transparent 26%,
     transparent 52%,rgba(23,26,19,.88) 100%);
+}
+.film--wide .film__veil{
+  background:linear-gradient(180deg,rgba(23,26,19,.52) 0%,transparent 34%,
+    transparent 44%,rgba(23,26,19,.9) 100%);
 }
 .film__meta{position:absolute;left:20px;right:20px;bottom:20px;z-index:4}
 .film__meta h3{color:var(--bone);font-size:1.4rem;line-height:1.14;margin-bottom:.3rem}
@@ -505,22 +515,35 @@ em{font-style:italic}
 /* film lightbox */
 .vlb{
   position:fixed;inset:0;z-index:420;background:rgba(16,18,13,.985);
-  display:none;flex-direction:column;padding:14px;
+  display:none;padding:14px;
 }
-.vlb.open{display:flex}
-.vlb__top{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:4px 4px 12px;flex:none}
+.vlb.open{display:block}
+.vlb__top{
+  position:absolute;top:14px;left:18px;right:18px;z-index:3;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+}
 .vlb__count{font-size:.7rem;letter-spacing:.22em;color:var(--brass);font-variant-numeric:tabular-nums}
-.vlb__stage{flex:1;display:grid;place-items:center;min-height:0;position:relative}
+.vlb__stage{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+}
 .vlb__stage video{
-  max-width:100%;max-height:100%;height:100%;width:auto;border-radius:2px;
+  max-width:calc(100% - 30px);max-height:calc(100% - 250px);width:auto;height:auto;
+  object-fit:contain;display:block;border-radius:2px;
   border:1px solid rgba(223,192,132,.25);background:#000;
   animation:lbIn .45s var(--ease) both;
 }
 @media (prefers-reduced-motion:reduce){.vlb__stage video{animation:none}}
-.vlb__cap{flex:none;text-align:center;padding:14px 10px 4px;max-width:60ch;margin:0 auto}
+.vlb__cap{
+  position:absolute;left:0;right:0;bottom:16px;z-index:3;
+  text-align:center;padding:0 14px;max-width:60ch;margin:0 auto;
+}
 .vlb__cap h3{color:var(--bone);font-size:1.35rem;margin-bottom:.25rem}
 .vlb__cap p{color:#A9AC99;font-size:.84rem;margin:0}
-.vlb__bar{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.vlb__bar{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+@media (max-height:560px){
+  .vlb__stage video{max-height:calc(100% - 120px)}
+  .vlb__cap h3{display:none}
+}
 
 /* =========================================================================
    BOOKING — three steps, ends in a written WhatsApp message.
