@@ -205,10 +205,16 @@ em{font-style:italic}
 
 .mnav{
   position:fixed;inset:74px 0 0;z-index:110;background:var(--ink-2);
-  display:flex;flex-direction:column;justify-content:center;gap:6px;padding:0 30px 60px;
+  display:flex;flex-direction:column;justify-content:flex-start;gap:6px;padding:0 30px 60px;
+  overflow-y:auto;overscroll-behavior:contain;
   transform:translateY(-100%);visibility:hidden;
   transition:transform .48s var(--ease),visibility .48s var(--ease);
 }
+/* Centring spacers. They share out the spare room so the menu still sits centred
+   on a tall screen, and collapse on a short one (laptop split-screen) so the
+   first link can never ride up behind the header. */
+.mnav::before,.mnav::after{content:"";flex:1 1 auto}
+.mnav::before{min-height:18px}
 .mnav.open{transform:none;visibility:visible}
 .mnav a:not(.btn){
   font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;
@@ -291,7 +297,7 @@ em{font-style:italic}
   .split--flip .split__media{order:2}
 }
 .split__media{position:relative}
-.split__media img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r)}
+.split__media img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r)}
 .split__media--tall img{aspect-ratio:3/4}
 .split__badge{
   position:absolute;right:-10px;bottom:-14px;background:var(--bone);
